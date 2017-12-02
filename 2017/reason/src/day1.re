@@ -8,10 +8,7 @@ let rec split = (input) =>
     [String.sub(str, 0, 1), ...split(substr)]
   };
 
-/* Is there a better way to parse string to ints? */
-let parseInt = (string) => Int32.to_int(Int32.of_string(string));
-
-let parse = (input) => List.map(parseInt, split(input));
+let parse = (input) => List.map(int_of_string, split(input));
 
 let checkNum = (a, b) => a == b ? a : 0;
 
@@ -23,7 +20,7 @@ let getNextNum = (offset, input) => {
 
 let add = (offset, input) => {
   let nums = List.mapi((i, a) => checkNum(a, getNextNum(offset + i, input)), input);
-  List.fold_left((a, b) => a + b, 0, nums)
+  List.fold_left((+), 0, nums)
 };
 
 let addNext = add(1);
