@@ -68,16 +68,14 @@ let solve2 = (input) => {
   Array.fold_left((++), "", hexes)
 };
 
-Js.log(solve1(5, example)); /* 12 */
+let driver = () => {
+  Js.log(solve1(5, example)); /* 12 */
+  Js.log(solve1(256, input1)); /* 13760 */
+  Js.log(solve2("")); /* a2582a3a0e66e6e86e3812dcb672a272 */
+  Js.log(solve2("AoC 2017")); /* 33efeb34ea91902bb2f59c9920caa6cd */
+  Js.log(solve2("1,2,3")); /* 3efbe78a8d82f29979031a4aa0b16a9d */
+  Js.log(solve2("1,2,4")); /* 63960835bcdc130f0b66d7ff4f6a5a8e */
+  Js.log(solve2(input1)) /* 2da93395f1a6bb3472203252e3b17fe5 */
+};
 
-Js.log(solve1(256, input1)); /* 13760 */
-
-Js.log(solve2("")); /* a2582a3a0e66e6e86e3812dcb672a272 */
-
-Js.log(solve2("AoC 2017")); /* 33efeb34ea91902bb2f59c9920caa6cd */
-
-Js.log(solve2("1,2,3")); /* 3efbe78a8d82f29979031a4aa0b16a9d */
-
-Js.log(solve2("1,2,4")); /* 63960835bcdc130f0b66d7ff4f6a5a8e */
-
-Js.log(solve2(input1)); /* 2da93395f1a6bb3472203252e3b17fe5 */
+driver();
