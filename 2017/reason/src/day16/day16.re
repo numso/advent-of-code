@@ -26,7 +26,7 @@ let partner = (dancers, a, b) => {
   dancers
 };
 
-let tick = (dancers, step: string) =>
+let tick = (dancers, step) =>
   switch (step.[0], String.sub(step, 1, String.length(step) - 1)) {
   | ('s', instr) => spin(dancers, int_of_string(instr))
   | ('x', instr) =>
@@ -45,18 +45,22 @@ let solve1 = (inp1, inp2) => {
   Js.Array.joinWith("", finished)
 };
 
-let solve2 = (inp1, inp2) => {
-  let dancers = ref(inp1);
-  for (_ in 1 to 1000000000) {
-    dancers := solve1(dancers^, inp2)
-  };
-  dancers
+let rec recSolve2 = (memo, dancers, dance) => {
+  let nextDancers = solve1(dancers, dance);
+  switch (List.find((item) => item === nextDancers, memo)) {
+  | _ =>
+    let i = 1000000000 mod List.length(memo);
+    Array.of_list(memo)[i]
+  | exception Not_found => recSolve2(List.append(memo, [nextDancers]), nextDancers, dance)
+  }
 };
+
+let solve2 = (dancers) => recSolve2([dancers], dancers);
 
 let driver = () => {
   Js.log(solve1("abcde", "s1,x3/4,pe/b")); /* baedc */
   Js.log(solve1("abcdefghijklmnop", input)); /* cknmidebghlajpfo */
-  Js.log(solve2("abcdefghijklmnop", input)) /*  */
+  Js.log(solve2("abcdefghijklmnop", input)) /* cbolhmkgfpenidaj */
 };
 
 driver();
