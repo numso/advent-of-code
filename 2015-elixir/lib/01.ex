@@ -54,21 +54,20 @@ defmodule Advent01 do
       iex> Advent01.part1(")())())")
       -3
 
-      iex> Advent01.part1()
+      iex> Advent01.part1
       74
   """
   def part1, do: part1(input())
 
   def part1(input) do
     parens = String.graphemes(input)
-    countFloors(parens)
+    count_floors(parens)
   end
 
-  def countFloors(parens), do: countFloors(0, parens)
-  def countFloors(count, []), do: count
-
-  def countFloors(count, ["(" | rest]), do: countFloors(count + 1, rest)
-  def countFloors(count, [")" | rest]), do: countFloors(count - 1, rest)
+  def count_floors(list, count \\ 0)
+  def count_floors([], count), do: count
+  def count_floors(["(" | rest], count), do: count_floors(rest, count + 1)
+  def count_floors([")" | rest], count), do: count_floors(rest, count - 1)
 
   @doc """
   ## Examples
@@ -78,24 +77,24 @@ defmodule Advent01 do
       iex> Advent01.part2("()())")
       5
 
-      iex> Advent01.part2()
+      iex> Advent01.part2
       1795
   """
   def part2, do: part2(input())
 
   def part2(input) do
     parens = String.graphemes(input)
-    findBasement(parens)
+    find_basement(parens)
   end
 
-  def findBasement(parens), do: findBasement(0, 0, parens)
-  def findBasement(-1, index, _), do: index
+  def find_basement(list, floor \\ 0, index \\ 0)
+  def find_basement(_, -1, index), do: index
 
-  def findBasement(floor, index, ["(" | rest]) do
-    findBasement(floor + 1, index + 1, rest)
+  def find_basement(["(" | rest], floor, index) do
+    find_basement(rest, floor + 1, index + 1)
   end
 
-  def findBasement(floor, index, [")" | rest]) do
-    findBasement(floor - 1, index + 1, rest)
+  def find_basement([")" | rest], floor, index) do
+    find_basement(rest, floor - 1, index + 1)
   end
 end
