@@ -51,70 +51,63 @@ defmodule Advent01 do
 
   def input, do: File.read!("inputs/01.in")
 
-  @doc """
+  @doc ~s"""
   ## Examples
-      iex> Advent01.part1("+1,-2,+3,+1", ",")
+      iex> Advent01.part1("+1\n-2\n+3\n+1")
       3
 
-      iex> Advent01.part1("+1,+1,+1", ",")
+      iex> Advent01.part1("+1\n+1\n+1")
       3
 
-      iex> Advent01.part1("+1,+1,-2", ",")
+      iex> Advent01.part1("+1\n+1\n-2")
       0
 
-      iex> Advent01.part1("-1,-2,-3", ",")
+      iex> Advent01.part1("-1\n-2\n-3")
       -6
 
       iex> Advent01.part1
       599
   """
-  def part1, do: part1(input(), "\n")
+  def part1, do: part1(input())
+  def part1(input), do: Enum.sum(parse(input))
 
-  def part1(input, separator) do
-    deltas = parse(input, separator)
-    Enum.sum(deltas)
+  def parse(input) do
+    Enum.map(String.split(input, "\n"), &String.to_integer/1)
   end
 
-  def parse(input, separator) do
-    Enum.map(String.split(input, separator), &String.to_integer/1)
-  end
-
-  @doc """
+  @doc ~s"""
   ## Examples
-      iex> Advent01.part2("+1,-2,+3,+1", ",")
+      iex> Advent01.part2("+1\n-2\n+3\n+1")
       2
 
-      iex> Advent01.part2("+1,-1", ",")
+      iex> Advent01.part2("+1\n-1")
       0
 
-      iex> Advent01.part2("+3,+3,+4,-2,-4", ",")
+      iex> Advent01.part2("+3\n+3\n+4\n-2\n-4")
       10
 
-      iex> Advent01.part2("-6,+3,+8,+5,-6", ",")
+      iex> Advent01.part2("-6\n+3\n+8\n+5\n-6")
       5
 
-      iex> Advent01.part2("+7,+7,-2,-7,-4", ",")
+      iex> Advent01.part2("+7\n+7\n-2\n-7\n-4")
       14
 
       iex> Advent01.part2
       81204
   """
-  def part2, do: part2(input(), "\n")
+  def part2, do: part2(input())
 
-  def part2(input, separator) do
-    deltas = parse(input, separator)
-    findRepeat(deltas, %{0 => 1}, 0, deltas)
+  def part2(input) do
+    deltas = parse(input)
+    find_repeat(deltas, %{}, 0, deltas)
   end
 
-  def findRepeat(inp, map, freq, []), do: findRepeat(inp, map, freq, inp)
+  def find_repeat(inp, map, freq, []), do: find_repeat(inp, map, freq, inp)
 
-  def findRepeat(inp, map, freq, [delta | rest]) do
-    nextFreq = freq + delta
-    nextMap = Map.update(map, nextFreq, 1, &(&1 + 1))
-
-    case Map.get(nextMap, nextFreq) do
-      2 -> nextFreq
-      _ -> findRepeat(inp, nextMap, nextFreq, rest)
+  def find_repeat(inp, map, freq, [delta | rest]) do
+    case Map.has_key?(map, freq) do
+      true -> freq
+      _ -> find_repeat(inp, Map.put(map, freq, 1), freq + delta, rest)
     end
   end
 end
