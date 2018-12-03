@@ -51,7 +51,7 @@ defmodule Advent03 do
 
   def input, do: File.read!("inputs/03.in")
 
-  @doc ~s"""
+  @doc ~S"""
   ## Examples
       iex> Advent03.part1("#1 @ 1,3: 4x4\n#2 @ 3,1: 4x4\n#3 @ 5,5: 2x2")
       4
@@ -85,7 +85,7 @@ defmodule Advent03 do
     Enum.reduce(xys, map, fn xy, map -> Map.update(map, xy, 1, &(&1 + 1)) end)
   end
 
-  @doc ~s"""
+  @doc ~S"""
   ## Examples
       iex> Advent03.part2("#1 @ 1,3: 4x4\n#2 @ 3,1: 4x4\n#3 @ 5,5: 2x2")
       "3"

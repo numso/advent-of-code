@@ -51,7 +51,7 @@ defmodule Advent01 do
 
   def input, do: File.read!("inputs/01.in")
 
-  @doc ~s"""
+  @doc ~S"""
   ## Examples
       iex> Advent01.part1("+1\n-2\n+3\n+1")
       3
@@ -75,7 +75,7 @@ defmodule Advent01 do
     Enum.map(String.split(input, "\n"), &String.to_integer/1)
   end
 
-  @doc ~s"""
+  @doc ~S"""
   ## Examples
       iex> Advent01.part2("+1\n-2\n+3\n+1")
       2
