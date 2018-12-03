@@ -101,15 +101,15 @@ defmodule Advent03 do
 
     {id, _} =
       Enum.find(claims, fn {id, claim} ->
-        Enum.all?(claims, fn {id2, claim2} -> !intersects(id, id2, claim, claim2) end)
+        Enum.all?(claims, fn {id2, claim2} -> !intersects?(id, id2, claim, claim2) end)
       end)
 
     id
   end
 
-  def intersects(id, id, _, _), do: false
+  def intersects?(id, id, _, _), do: false
 
-  def intersects(_, _, claim1, claim2) do
+  def intersects?(_, _, claim1, claim2) do
     Enum.any?(claim1, fn {key, _} -> Map.has_key?(claim2, key) end)
   end
 
