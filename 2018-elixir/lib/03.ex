@@ -76,13 +76,14 @@ defmodule Advent03 do
   end
 
   def add_claim(str, map) do
-    {_, {left, top}, {width, height}} = parse(str)
-    create_claim_map(left, top, width, height, map)
+    xys = get_xys(parse(str))
+    Enum.reduce(xys, map, &Map.update(&2, &1, 1, fn x -> x + 1 end))
   end
 
-  def create_claim_map(left, top, width, height, map \\ %{}) do
-    xys = for x <- left..(left + width - 1), y <- top..(top + height - 1), do: {x, y}
-    Enum.reduce(xys, map, fn xy, map -> Map.update(map, xy, 1, &(&1 + 1)) end)
+  def range(from, length), do: from..(from + length - 1)
+
+  def get_xys({_, {left, top}, {width, height}}) do
+    for x <- range(left, width), y <- range(top, height), do: {x, y}
   end
 
   @doc ~S"""
@@ -97,25 +98,13 @@ defmodule Advent03 do
 
   def part2(input) do
     parts = String.split(input, "\n")
-    claims = Enum.map(parts, &create_claim/1)
-
-    {id, _} =
-      Enum.find(claims, fn {id, claim} ->
-        Enum.all?(claims, fn {id2, claim2} -> !intersects?(id, id2, claim, claim2) end)
-      end)
-
-    id
+    fabric = Enum.reduce(parts, %{}, &add_claim/2)
+    str = Enum.find(parts, &is_uniq?(fabric, &1))
+    elem(parse(str), 0)
   end
 
-  def intersects?(id, id, _, _), do: false
-
-  def intersects?(_, _, claim1, claim2) do
-    Enum.any?(claim1, fn {key, _} -> Map.has_key?(claim2, key) end)
-  end
-
-  def create_claim(str) do
-    {id, {left, top}, {width, height}} = parse(str)
-    claim = create_claim_map(left, top, width, height)
-    {id, claim}
+  def is_uniq?(fabric, str) do
+    xys = get_xys(parse(str))
+    Enum.all?(xys, &(Map.get(fabric, &1) == 1))
   end
 end
