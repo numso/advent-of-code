@@ -43,7 +43,7 @@ defmodule Advent05 do
 
   @doc """
   ## Examples
-      iex> Advent05.part1('dabAcCaCBAcCcaDA')
+      iex> Advent05.part1("dabAcCaCBAcCcaDA")
       10
 
       iex> Advent05.part1
@@ -78,7 +78,7 @@ defmodule Advent05 do
 
   @doc """
   ## Examples
-      iex> Advent05.part2(Advent05.sample())
+      iex> Advent05.part2("dabAcCaCBAcCcaDA")
       4
 
       iex> Advent05.part2
