@@ -50,31 +50,22 @@ defmodule Advent05 do
       11476
   """
   def part1, do: part1(input())
+  def part1(input), do: String.length(remove_polarities(input))
 
-  def part1(input) do
-    chars = String.graphemes(input)
-    cleaned = remove_all_polarities(chars)
-    length(cleaned)
+  def build_regex do
+    abc = String.graphemes("abcdefghijklmnopqrstuvwxyz")
+    parts = Enum.map(abc, &(String.upcase(&1) <> &1))
+    str = Enum.join(parts, "|")
+    Regex.compile!(str <> "|" <> String.reverse(str))
   end
 
-  def remove_all_polarities(input) do
-    removed = remove_polarities(input, [])
+  def remove_polarities(input), do: remove_polarities("", input, build_regex())
+  def remove_polarities(input, input, _), do: input
 
-    case length(removed) == length(input) do
-      true -> removed
-      false -> remove_all_polarities(removed)
-    end
+  def remove_polarities(_, input, re) do
+    next = String.replace(input, re, "")
+    remove_polarities(input, next, re)
   end
-
-  def remove_polarities([a, b | rest], result) do
-    case a != b && String.upcase(a) == String.upcase(b) do
-      true -> remove_polarities(rest, result)
-      false -> remove_polarities([b | rest], [a | result])
-    end
-  end
-
-  def remove_polarities([a], result), do: remove_polarities([], [a | result])
-  def remove_polarities([], result), do: Enum.reverse(result)
 
   @doc """
   ## Examples
@@ -87,22 +78,20 @@ defmodule Advent05 do
   def part2, do: part2(input())
 
   def part2(input) do
-    chars = String.graphemes(input)
     abc = String.graphemes("abcdefghijklmnopqrstuvwxyz")
 
     lengths =
       Enum.map(abc, fn letter ->
-        polymer = remove_units(chars, letter)
-        cleaned = remove_all_polarities(polymer)
-        length(cleaned)
+        polymer = remove_units(input, letter)
+        cleaned = remove_polarities(polymer)
+        String.length(cleaned)
       end)
 
     Enum.min(lengths)
   end
 
-  def remove_units(chars, letter) do
-    Enum.filter(chars, fn char ->
-      char != letter && char != String.upcase(letter)
-    end)
+  def remove_units(original, letter) do
+    re = Regex.compile!(letter <> "|" <> String.upcase(letter))
+    String.replace(original, re, "")
   end
 end
