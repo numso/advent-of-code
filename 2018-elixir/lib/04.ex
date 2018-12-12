@@ -72,7 +72,7 @@ defmodule Advent04 do
   def part1, do: part1(input())
 
   def part1(input) do
-    lines = String.split(input, "\r\n")
+    lines = String.split(input, "\n")
     shifts = parse(Enum.sort(lines))
     sleepiest = find_most_sleepy(shifts)
     sleepiest_minute = find_sleepy_minute(sleepiest, shifts)
@@ -146,7 +146,7 @@ defmodule Advent04 do
   def part2, do: part2(input())
 
   def part2(input) do
-    lines = String.split(input, "\r\n")
+    lines = String.split(input, "\n")
     shifts = parse(Enum.sort(lines))
     sleepiest = find_most_sleepy_minute(shifts)
     sleepiest_minute = find_sleepy_minute(sleepiest, shifts)

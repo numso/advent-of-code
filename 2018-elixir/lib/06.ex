@@ -114,7 +114,7 @@ defmodule Advent06 do
   end
 
   def parse(input) do
-    lines = String.split(input, "\r\n")
+    lines = String.split(input, "\n")
 
     Enum.map(lines, fn line ->
       [x, y] = String.split(line, ", ")
