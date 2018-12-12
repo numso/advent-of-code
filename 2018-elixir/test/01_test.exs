@@ -6,5 +6,10 @@ defmodule Advent2018Test do
   doctest Advent04
   doctest Advent05
   doctest Advent06
+  # doctest Advent07
   doctest Advent08
+  # doctest Advent09
+  # doctest Advent10
+  doctest Advent11
+  doctest Advent12
 end
